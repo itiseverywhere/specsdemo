@@ -1,0 +1,17 @@
+resource:
+  name: azure-app-service-demo
+  type: Applications.Core/applications
+  properties:
+    application:
+      name: azure-app-service-demo
+
+resources:
+  - name: web
+    type: Applications.Core/containers
+    properties:
+      application: azure-app-service-demo
+      container:
+        image: azure-app-service-demo:latest
+        ports:
+          http:
+            containerPort: 3000
