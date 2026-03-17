@@ -9,6 +9,13 @@ A simple Node.js Todo API designed for deployment to Azure App Service.
 - Mark todo done
 - Update and view a custom message via web interface
 
+## Project Structure
+
+- `index.js` - Main application code
+- `main.bicep` - Radius deployment template (currently configured for local)
+- `azuredeploy.bicep` - Azure infrastructure template
+- `recipes/` - Radius recipes for different deployment targets (prepared but not used)
+
 ## Running Locally
 
 1. Install dependencies:
@@ -21,27 +28,30 @@ A simple Node.js Todo API designed for deployment to Azure App Service.
    & "C:\Program Files\nodejs\node.exe" index.js
    ```
 
+   The app will run on:
+   - **HTTPS only:** https://localhost:3443 (self-signed certificate - accept the security warning in your browser)
+
 3. Test the app:
-   - Health check: Open http://localhost:3000/healthz in your browser or run:
+   - Health check: Open https://localhost:3443/healthz in your browser (accept certificate warning) or run:
      ```powershell
-     Invoke-RestMethod -Uri http://localhost:3000/healthz
+     Invoke-RestMethod -Uri https://localhost:3443/healthz -SkipCertificateCheck
      ```
-   - Web interface: Open http://localhost:3000/ in your browser to update the message
-   - Update message via API:
-     ```powershell
-     Invoke-RestMethod -Uri http://localhost:3000/message -Method Post -Body '{"message":"Your new message"}' -ContentType 'application/json'
-     ```
+   - Web interface: Open https://localhost:3443/ in your browser to manage todos and update the message
    - Create a todo:
      ```powershell
-     Invoke-RestMethod -Uri http://localhost:3000/todos -Method Post -Body '{"title":"My first todo"}' -ContentType 'application/json'
+     Invoke-RestMethod -Uri https://localhost:3443/todos -Method Post -Body '{"title":"My first todo"}' -ContentType 'application/json' -SkipCertificateCheck
      ```
    - List todos:
      ```powershell
-     Invoke-RestMethod -Uri http://localhost:3000/todos
+     Invoke-RestMethod -Uri https://localhost:3443/todos -SkipCertificateCheck
      ```
    - Mark todo done (replace ID with actual ID from create):
      ```powershell
-     Invoke-RestMethod -Uri http://localhost:3000/todos/YOUR_TODO_ID/done -Method Patch
+     Invoke-RestMethod -Uri https://localhost:3443/todos/YOUR_TODO_ID/done -Method Patch -SkipCertificateCheck
+     ```
+   - Update message via API:
+     ```powershell
+     Invoke-RestMethod -Uri https://localhost:3443/message -Method Post -Body '{"message":"Your new message"}' -ContentType 'application/json' -SkipCertificateCheck
      ```
 
 3. Open http://localhost:3000

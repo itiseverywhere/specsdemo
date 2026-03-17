@@ -1,0 +1,24 @@
+name: appservice
+type: Applications.Core/containers
+parameters:
+  image: string
+  port: int = 80
+resources:
+  - type: Microsoft.Web/sites
+    properties:
+      kind: app,linux
+      properties:
+        serverFarmId: '/subscriptions/${environment.azure.subscriptionId}/resourceGroups/${environment.azure.resourceGroup}/providers/Microsoft.Web/serverfarms/${environment.name}-plan'
+        siteConfig:
+          linuxFxVersion: 'NODE|18-lts'
+          appSettings:
+            - name: WEBSITES_PORT
+              value: '${parameters.port}'
+  - type: Microsoft.Web/serverfarms
+    properties:
+      kind: linux
+      sku:
+        name: B1
+        tier: Basic
+      properties:
+        reserved: true

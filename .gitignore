@@ -6,3 +6,6 @@ node_modules/
 kind.exe
 kubectl.exe
 rad.exe
+# Self-signed certificates (regenerate locally)
+key.pem
+cert.pem

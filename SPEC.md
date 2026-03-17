@@ -19,11 +19,18 @@ This service implements a simple Todo API (create/list/complete) and must be dep
 - Deployment must be automated via script (e.g., `deploy.ps1`).
 
 ### 3.2 Security & Compliance (ISO 27001)
-- Enforce **HTTPS only** (no HTTP).
+- Enforce **HTTPS only** (no HTTP) in production.
 - Enforce **TLS 1.2+**.
 - Use **Managed Identity** for access to Azure resources.
 - Store secrets in **Azure Key Vault** (no secrets in code/config).
 - Use **persistent storage** (e.g., Cosmos DB) instead of in-memory.
+- **Local development**: Uses self-signed HTTPS certificate for testing HTTPS behavior.
+
+### 3.3 Deployment & Recipes
+- Use Radius recipes for cloud-native deployment.
+- Recipes prepared in `recipes/` folder for Azure App Service.
+- Local deployment uses built-in 'default' container recipe.
+- Cloud deployment can use 'appservice' recipe for Azure.
 
 ### 3.3 Azure Well-Architected
 - Follow the **Reliability** pillar: health checks, retry logic, and failover.

@@ -1,5 +1,7 @@
 const express = require('express');
 const { randomUUID } = require('crypto');
+const https = require('https');
+const fs = require('fs');
 
 const { CosmosClient } = require('@azure/cosmos');
 
@@ -7,6 +9,7 @@ const app = express();
 app.use(express.json());
 
 const port = process.env.PORT || 3000;
+const httpsPort = 3443;
 
 // Use Cosmos DB if configured (suitable for production, persistent storage)
 const cosmosConnectionString = process.env.COSMOS_CONNECTION_STRING;
@@ -190,9 +193,19 @@ async function start() {
     console.log('No COSMOS_CONNECTION_STRING defined; using in-memory store.');
   }
 
-  app.listen(port, () => {
-    console.log(`App listening on port ${port}`);
-  });
+  // HTTPS server only (self-signed for local development)
+  try {
+    const options = {
+      key: fs.readFileSync('key.pem'),
+      cert: fs.readFileSync('cert.pem')
+    };
+    const httpsServer = https.createServer(options, app);
+    httpsServer.listen(httpsPort, () => {
+      console.log(`HTTPS server listening on port ${httpsPort}`);
+    });
+  } catch (err) {
+    console.log('HTTPS not available (certificate files missing):', err.message);
+  }
 }
 
 start();
