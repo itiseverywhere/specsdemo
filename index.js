@@ -49,15 +49,85 @@ app.get('/', (req, res) => {
     <!DOCTYPE html>
     <html>
     <head>
-      <title>Todo App</title>
+      <title>${currentMessage} | Todo App</title>
+      <style>
+        body {
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          background-color: #1a1a1a;
+          color: #ffffff;
+          margin: 0;
+          padding: 20px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          min-height: 100vh;
+        }
+        h1 {
+          color: #00a4ef;
+          text-align: center;
+          margin-bottom: 30px;
+          font-weight: 300;
+          font-size: 2.5em;
+        }
+        h2 {
+          color: #ffffff;
+          margin-top: 40px;
+          margin-bottom: 20px;
+          font-weight: 300;
+        }
+        input[type="text"] {
+          background-color: #333333;
+          border: 1px solid #555555;
+          color: #ffffff;
+          padding: 10px;
+          border-radius: 4px;
+          width: 300px;
+          margin-bottom: 10px;
+        }
+        button {
+          background-color: #00a4ef;
+          color: #ffffff;
+          border: none;
+          padding: 10px 20px;
+          border-radius: 4px;
+          cursor: pointer;
+          margin-left: 10px;
+          transition: background-color 0.3s;
+        }
+        button:hover {
+          background-color: #0088cc;
+        }
+        p {
+          margin: 10px 0;
+          color: #cccccc;
+        }
+        ul {
+          list-style-type: none;
+          padding: 0;
+          width: 400px;
+        }
+        li {
+          background-color: #2a2a2a;
+          margin: 5px 0;
+          padding: 10px;
+          border-radius: 4px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+        li button {
+          margin-left: 10px;
+          padding: 5px 10px;
+          font-size: 0.8em;
+        }
+      </style>
     </head>
     <body>
-      <h1>Todo App</h1>
+      <h1>${currentMessage}</h1>
       
       <h2>Update the Message</h2>
       <input id="msg" type="text" value="${currentMessage.replace(/"/g, '&quot;')}" style="width: 300px;">
       <button onclick="updateMessage()">Update Message</button>
-      <p>Current message: <span id="current">${currentMessage}</span></p>
       
       <h2>Todos</h2>
       <input id="todoTitle" type="text" placeholder="New todo title" style="width: 300px;">
@@ -73,7 +143,9 @@ app.get('/', (req, res) => {
             body: JSON.stringify({ message })
           });
           if (response.ok) {
-            document.getElementById('current').textContent = message;
+            document.querySelector('h1').textContent = message;
+            document.getElementById('msg').value = message;
+            document.title = message + ' | sdd demo';
           }
         }
         
