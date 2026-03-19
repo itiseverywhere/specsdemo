@@ -145,6 +145,7 @@ app.get('/', (req, res) => {
           if (response.ok) {
             document.querySelector('h1').textContent = message;
             document.getElementById('msg').value = message;
+            document.title = message + ' | Todo App';
           }
         }
         
